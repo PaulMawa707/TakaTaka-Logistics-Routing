@@ -504,7 +504,7 @@ def run_wialon_uploader():
             st.error(f"❌ Error: {str(e)}")
 
 
-if __name__ == "__main__":
-    run_wialon_uploader()
+#if __name__ == "__main__":
+    #run_wialon_uploader()
 
    
