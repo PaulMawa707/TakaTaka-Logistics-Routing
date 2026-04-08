@@ -464,7 +464,12 @@ def run_wialon_uploader():
         with col1:
             start_hour = st.slider("Route Start Hour", 0, 23, 6)
         with col2:
-            end_hour = st.slider("Route End Hour", start_hour + 1, 23, 18)
+            end_hour = st.slider("Route End Hour", 0, 23, 18)
+        overnight_route = st.checkbox(
+            "End time is on the next day (overnight route)",
+            value=(end_hour <= start_hour),
+            help="Enable when route starts in the evening and ends the following morning."
+        )
         warehouse_choice = st.selectbox("Select Warehouse", list(WAREHOUSES.keys()))
         token = st.text_input("Enter your Wialon Token", type="password")
         resource_id = st.text_input("Enter Wialon Resource ID")
@@ -479,8 +484,15 @@ def run_wialon_uploader():
             with st.spinner("Processing..."):
                 tz = pytz.timezone('Africa/Nairobi')
                 start_time = tz.localize(datetime.combine(selected_date, datetime.min.time().replace(hour=start_hour)))
-                end_time = tz.localize(datetime.combine(selected_date, datetime.min.time().replace(hour=end_hour)))
+                if overnight_route:
+                    end_date = selected_date + pd.Timedelta(days=1)
+                else:
+                    end_date = selected_date
+                end_time = tz.localize(datetime.combine(end_date, datetime.min.time().replace(hour=end_hour)))
                 tf, tt = int(start_time.timestamp()), int(end_time.timestamp())
+                if tt <= tf:
+                    st.error("End time must be after start time. Enable overnight mode if the route ends next day.")
+                    return
                 gdf_joined, truck_number_norm = process_multiple_excels(excel_files)
                 if gdf_joined is None or gdf_joined.empty:
                     st.error("No delivery rows with valid coordinates were found.")
