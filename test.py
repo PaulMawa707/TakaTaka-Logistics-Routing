@@ -332,7 +332,7 @@ def send_orders_and_create_route(token, resource_id, unit_id, vehicle_name, df_g
             "id": 0,
             "n": wh_name,
             "p": {"ut": 0, "rep": True, "w": "0", "c": "0",
-                  "r": {"vt": last_visit_time, "ndt": 60, "id": route_id, "i": sequence_index, "m": 0, "t": 180},
+                  "r": {"vt": last_visit_time, "ndt": 3, "id": route_id, "i": sequence_index, "m": 0, "t": 180},
                   "u": int(unit_id), "a": f"{wh_name} ({wh_lat}, {wh_lon})",
                   "weight": "0", "cost": "0"},
             "f": 260,
@@ -377,8 +377,8 @@ def send_orders_and_create_route(token, resource_id, unit_id, vehicle_name, df_g
             cost_val = float(cust_row.get('AMOUNT', 0.0))
             location = f"{cust_row['LOCATION']} ({coords['y']}, {coords['x']})"
 
-            # simple time plan: +10 minutes per stop from last
-            order_tm = max(last_visit_time + 3600, int(tf))
+            # simple time plan: +3 minutes per stop from last
+            order_tm = max(last_visit_time + 180, int(tf))
 
             mileage = int(calc_dist(prev_coords, coords) * 1000)
 
@@ -469,7 +469,7 @@ def send_orders_and_create_route(token, resource_id, unit_id, vehicle_name, df_g
             "id": final_id,
             "n": wh_name,
             "p": {"ut": 0, "rep": True, "w": "0", "c": "0",
-                  "r": {"vt": last_visit_time + 180, "ndt": 60, "id": route_id,
+                  "r": {"vt": last_visit_time + 180, "ndt": 3, "id": route_id,
                         "i": sequence_index, "m": mileage_back, "t": 180},
                   "u": int(unit_id), "a": f"{wh_name} ({wh_lat}, {wh_lon})",
                   "weight": "0", "cost": "0"},
