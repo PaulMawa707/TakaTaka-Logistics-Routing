@@ -3,6 +3,7 @@ import os
 import base64
 import test
 import test3
+import weekly_dispatch
 
 # =========================================================
 # Page Config
@@ -64,7 +65,8 @@ page = st.sidebar.radio(
     "Select Application",
     [
         "Optimized Orders Uploader (Nearest-First)",
-        "Strict Orders Uploader (Excel Order)"
+        "Strict Orders Uploader (Excel Order)",
+        "Scheduled Weekly Dispatch (Template Routes)",
     ]
 )
 
@@ -78,6 +80,10 @@ if page == "Optimized Orders Uploader (Nearest-First)":
 elif page == "Strict Orders Uploader (Excel Order)":
     st.header("📋 Logistics Strict Orders Uploader")
     test3.run_wialon_uploader()
+
+elif page == "Scheduled Weekly Dispatch (Template Routes)":
+    st.header("🗓️ Scheduled Weekly Dispatch")
+    weekly_dispatch.run_weekly_dispatch()
 
 # =========================================================
 # Footer (optional)
