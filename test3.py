@@ -26,8 +26,6 @@ try:
 except Exception:
     pass
 
-st.set_page_config(page_title="Logistics Strict Orders Uploader", layout="wide")
-
 
 def get_base64_image(image_path):
     with open(image_path, "rb") as img_file:
@@ -295,12 +293,17 @@ def send_orders_and_create_route(token, resource_id, unit_id, vehicle_name, df_g
             "p": {
                 "ut": 0, "rep": True, "w": "0", "c": "0",
                 "r": {"vt": last_visit_time, "ndt": 60, "id": route_id,
-                      "i": sequence_index, "m": 0, "t": 0},
+                      "i": sequence_index, "m": 0, "t": 180},
                 "u": int(unit_id), "a": f"{wh_name} ({wh_lat}, {wh_lon})",
                 "weight": "0", "cost": "0"
             },
             "f": 260,
             "tf": tf, "tt": tt, "r": 100, "y": wh_lat, "x": wh_lon,
+            "s": 0,
+            "sf": 0,
+            "trt": 0,
+            "st": current_time,
+            "cnm": 0,
             "callMode": "create", "u": int(unit_id),
             "weight": "0", "cost": "0",
             "cargo": {"weight": "0", "cost": "0"},
@@ -345,6 +348,11 @@ def send_orders_and_create_route(token, resource_id, unit_id, vehicle_name, df_g
                 "tf": tf, "tt": tt,
                 "r": 100, "y": lat, "x": lon,
                 "rp": polyline,
+                "s": 0,
+                "sf": 0,
+                "trt": 0,
+                "st": current_time,
+                "cnm": 0,
                 "callMode": "create", "u": int(unit_id),
                 "weight": str(weight_kg), "cost": str(int(cost_val)),
                 "cargo": {"weight": str(weight_kg), "cost": str(int(cost_val))},
@@ -369,6 +377,11 @@ def send_orders_and_create_route(token, resource_id, unit_id, vehicle_name, df_g
             "f": 264, "tf": tf, "tt": tt, "r": 100,
             "y": wh_lat, "x": wh_lon,
             "rp": polyline_back,
+            "s": 0,
+            "sf": 0,
+            "trt": 0,
+            "st": current_time,
+            "cnm": 0,
             "callMode": "create", "u": int(unit_id),
             "weight": "0", "cost": "0",
             "cargo": {"weight": "0", "cost": "0"},
@@ -392,7 +405,7 @@ def send_orders_and_create_route(token, resource_id, unit_id, vehicle_name, df_g
                         "uid": route_id,
                         "callMode": "create",
                         "exp": 0,
-                        "f": 1,
+                        "f": 0,
                         "n": f"{vehicle_name} - {datetime.now().strftime('%Y-%m-%d %H:%M')}",
                         "summary": {
                             "countOrders": len(route_orders),
