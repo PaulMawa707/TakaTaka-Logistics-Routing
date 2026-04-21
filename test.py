@@ -26,8 +26,6 @@ try:
 except Exception:
     pass
 
-st.set_page_config(page_title="Logistics Optimized Orders Uploader", layout="wide")
-
 
 def get_base64_image(image_path):
     with open(image_path, "rb") as img_file:
@@ -256,7 +254,7 @@ def send_orders_and_create_route(token, resource_id, unit_id, vehicle_name, df_g
                 "r": 100,
                 "id": order_id,
                 "p": {
-                    "ut": 3600,
+                    "ut": 180,
                     "rep": True,
                     "w": weight_kg,
                     "v": 0,
@@ -334,7 +332,7 @@ def send_orders_and_create_route(token, resource_id, unit_id, vehicle_name, df_g
             "id": 0,
             "n": wh_name,
             "p": {"ut": 0, "rep": True, "w": "0", "c": "0",
-                  "r": {"vt": last_visit_time, "ndt": 60, "id": route_id, "i": sequence_index, "m": 0, "t": 0},
+                  "r": {"vt": last_visit_time, "ndt": 60, "id": route_id, "i": sequence_index, "m": 0, "t": 180},
                   "u": int(unit_id), "a": f"{wh_name} ({wh_lat}, {wh_lon})",
                   "weight": "0", "cost": "0"},
             "f": 260,
@@ -404,11 +402,11 @@ def send_orders_and_create_route(token, resource_id, unit_id, vehicle_name, df_g
                 "id": order_id,
                 "n": order_name,
                 "p": {
-                    "ut": 3600,
+                    "ut": 180,
                     "rep": True,
                     "w": str(weight_kg),
                     "c": str(int(cost_val)),
-                    "r": {"vt": order_tm, "ndt": 60, "id": route_id,
+                    "r": {"vt": order_tm, "ndt": 3, "id": route_id,
                           "i": sequence_index, "m": mileage, "t": 0},
                     "u": int(unit_id),
                     "a": location,
@@ -471,8 +469,8 @@ def send_orders_and_create_route(token, resource_id, unit_id, vehicle_name, df_g
             "id": final_id,
             "n": wh_name,
             "p": {"ut": 0, "rep": True, "w": "0", "c": "0",
-                  "r": {"vt": last_visit_time + 3600, "ndt": 60, "id": route_id,
-                        "i": sequence_index, "m": mileage_back, "t": 0},
+                  "r": {"vt": last_visit_time + 180, "ndt": 60, "id": route_id,
+                        "i": sequence_index, "m": mileage_back, "t": 180},
                   "u": int(unit_id), "a": f"{wh_name} ({wh_lat}, {wh_lon})",
                   "weight": "0", "cost": "0"},
             "f": 264,
