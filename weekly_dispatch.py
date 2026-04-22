@@ -252,7 +252,7 @@ def send_orders_and_create_route(token, resource_id, unit_id, vehicle_name, orde
                     "rep": True,
                     "w": "0",
                     "c": "0",
-                    "r": {"vt": last_visit_time, "ndt": 60, "id": route_id, "i": sequence_index, "m": 0, "t": 0},
+                    "r": {"vt": last_visit_time, "ndt": 3, "id": route_id, "i": sequence_index, "m": 0, "t": 0},
                     "u": int(unit_id),
                     "a": f"{wh_name} ({wh_lat}, {wh_lon})",
                     "weight": "0",
@@ -290,7 +290,7 @@ def send_orders_and_create_route(token, resource_id, unit_id, vehicle_name, orde
             cost_val = float(row.get("AMOUNT", 0))
             priority = int(row.get("PRIORITY", idx + 1))
             polyline, mileage = get_osrm_polyline(prev, {"y": lat, "x": lon})
-            last_visit_time += 3600
+            last_visit_time += 180
             sequence_index += 1
             route_orders.append(
                 {
@@ -298,11 +298,11 @@ def send_orders_and_create_route(token, resource_id, unit_id, vehicle_name, orde
                     "id": idx + 1,
                     "n": order_name,
                     "p": {
-                        "ut": 3600,
+                        "ut": 180,
                         "rep": True,
                         "w": str(weight_kg),
                         "c": str(int(cost_val)),
-                        "r": {"vt": last_visit_time, "ndt": 60, "id": route_id, "i": sequence_index, "m": mileage, "t": 0},
+                        "r": {"vt": last_visit_time, "ndt": 3, "id": route_id, "i": sequence_index, "m": mileage, "t": 0},
                         "u": int(unit_id),
                         "a": f"{location} ({lat}, {lon})",
                         "weight": str(weight_kg),
@@ -346,7 +346,7 @@ def send_orders_and_create_route(token, resource_id, unit_id, vehicle_name, orde
                     "rep": True,
                     "w": "0",
                     "c": "0",
-                    "r": {"vt": last_visit_time + 3600, "ndt": 60, "id": route_id, "i": sequence_index, "m": mileage_back, "t": 0},
+                    "r": {"vt": last_visit_time + 180, "ndt": 3, "id": route_id, "i": sequence_index, "m": mileage_back, "t": 0},
                     "u": int(unit_id),
                     "a": f"{wh_name} ({wh_lat}, {wh_lon})",
                     "weight": "0",
