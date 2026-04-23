@@ -23,6 +23,7 @@ PILOT_DAY_ZIPS = {
     "Tuesday": "Tuesday.zip",
     "Wednesday": "Wednesday.zip",
     "Thursday": "Thursday.zip",
+    "Friday": "Friday.zip",
 }
 LOCAL_ASSETS_FILE = "Takataka Ids.xlsx"
 
