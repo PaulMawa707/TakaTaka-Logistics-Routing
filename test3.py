@@ -70,10 +70,6 @@ def show_logo_top_right(image_path, width=120):
         pass
 
 
-set_background()
-show_logo_top_right("taka-taka-solutions-logo (1).jpg", width=120)
-st.markdown("<br>", unsafe_allow_html=True)
-
 # =============================
 # Normalization & parsing
 # =============================
