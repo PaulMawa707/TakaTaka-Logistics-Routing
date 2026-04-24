@@ -1,14 +1,44 @@
 import streamlit as st
 import os
 import base64
-import test
-import test3
-import weekly_dispatch
+import importlib.util
+from pathlib import Path
+
+st.set_page_config(page_title="TakaTaka Logistics Tools", layout="wide")
+
+
+def load_local_module(module_name, candidate_filenames):
+    base_dir = Path(__file__).parent
+
+    # Prefer explicit local files first (avoids importing stdlib modules like `test`).
+    for filename in candidate_filenames:
+        module_path = base_dir / filename
+        if module_path.exists():
+            spec = importlib.util.spec_from_file_location(module_name, module_path)
+            if spec and spec.loader:
+                module = importlib.util.module_from_spec(spec)
+                spec.loader.exec_module(module)
+                return module
+
+    # Fallback to regular import if local files are not found.
+    try:
+        return __import__(module_name)
+    except Exception:
+        pass
+
+    raise ModuleNotFoundError(
+        f"Could not load module '{module_name}'. Tried: {', '.join(candidate_filenames)}"
+    )
+
+
+test = load_local_module("test", ["test.py", "test (1).py"])
+test3 = load_local_module("test3", ["test3.py", "test3 (1).py"])
+weekly_dispatch = load_local_module("weekly_dispatch", ["weekly_dispatch.py", "weekly_dispatch (1).py"])
 
 # =========================================================
 # Page Config
 # =========================================================
-st.set_page_config(page_title="TakaTaka Logistics Tools", layout="wide")
+# Must be called before any imported module runs Streamlit commands.
 
 # =========================================================
 # Shared background and logo
