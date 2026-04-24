@@ -6,7 +6,6 @@ import time
 import zipfile
 from datetime import datetime
 from pathlib import Path
-
 import pandas as pd
 import pytz
 import requests
@@ -24,6 +23,7 @@ PILOT_DAY_ZIPS = {
     "Wednesday": "Wednesday.zip",
     "Thursday": "Thursday.zip",
     "Friday": "Friday.zip",
+    "Saturday": "Saturday.zip",
 }
 LOCAL_ASSETS_FILE = "Takataka Ids.xlsx"
 
