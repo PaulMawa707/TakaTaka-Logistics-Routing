@@ -430,7 +430,7 @@ def send_orders_and_create_route(token, resource_id, unit_id, vehicle_name, orde
 
 
 def run_weekly_dispatch():
-    st.subheader("Weekly Scheduled Dispatch (Monday/Tuesday Pilot)")
+    st.subheader("Weekly Scheduled Dispatch")
     st.caption("Routes are loaded from local Monday.zip and Tuesday.zip in this app folder.")
 
     with st.form("weekly_dispatch_form"):
