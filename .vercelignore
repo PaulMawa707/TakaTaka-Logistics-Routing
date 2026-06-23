@@ -1,0 +1,10 @@
+.venv
+venv
+__pycache__
+.git
+scripts
+main.py
+*.pyc
+.env
+.env.*
+!.env.example

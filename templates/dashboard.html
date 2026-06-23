@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ title }}</title>
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/takataka.png') }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+</head>
+<body data-active-tab="{{ active_tab }}">
+
+<nav class="topbar">
+  <div class="topbar-left">
+    {% if logo_exists %}
+    <div class="topbar-logo">
+      <img src="{{ url_for('static', filename='img/takataka.png') }}" alt="TakaTaka Logo">
+    </div>
+    <div class="topbar-divider"></div>
+    {% endif %}
+    <div>
+      <div class="topbar-wordmark">TakaTaka <span>Logistics</span></div>
+      <div class="topbar-subtitle">Route Automation · Kenya</div>
+    </div>
+  </div>
+  <div class="topbar-right">
+    <div class="topbar-clock" id="live-clock"><span>EAT</span> <span id="clock-time">--:--:--</span></div>
+    <div class="live-pill"><div class="live-dot"></div>Live</div>
+    <a href="{{ url_for('logout') }}" class="btn-logout">Sign Out</a>
+  </div>
+</nav>
+
+<nav class="mobile-tab-bar" aria-label="Main sections">
+  <button type="button" class="mobile-tab-item{% if active_tab == 'optimized' %} active{% endif %}" data-tab="optimized" onclick="showTab('optimized')">
+    <span class="mt-ico">📦</span><span class="mt-lbl">Optimized</span>
+  </button>
+  <button type="button" class="mobile-tab-item{% if active_tab == 'strict' %} active{% endif %}" data-tab="strict" onclick="showTab('strict')">
+    <span class="mt-ico">📋</span><span class="mt-lbl">Strict</span>
+  </button>
+  <button type="button" class="mobile-tab-item{% if active_tab == 'dispatch' %} active{% endif %}" data-tab="dispatch" onclick="showTab('dispatch')">
+    <span class="mt-ico">🗓️</span><span class="mt-lbl">Dispatch</span>
+  </button>
+</nav>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-nav">
+      <a href="#" class="nav-item{% if active_tab == 'optimized' %} active{% endif %}" data-tab="optimized" onclick="showTab('optimized'); return false;">
+        <span class="nav-icon">📦</span>
+        <span class="nav-label">Optimized Orders</span>
+      </a>
+      <a href="#" class="nav-item{% if active_tab == 'strict' %} active{% endif %}" data-tab="strict" onclick="showTab('strict'); return false;">
+        <span class="nav-icon">📋</span>
+        <span class="nav-label">Strict Orders</span>
+      </a>
+      <a href="#" class="nav-item{% if active_tab == 'dispatch' %} active{% endif %}" data-tab="dispatch" onclick="showTab('dispatch'); return false;">
+        <span class="nav-icon">🗓️</span>
+        <span class="nav-label">Scheduled Dispatch</span>
+      </a>
+    </div>
+    <div class="sidebar-footer">
+      <a href="{{ controltech_url }}" target="_blank" rel="noopener noreferrer" class="sidebar-footer-link" title="Powered by ControlTech">
+        {% if ct_logo_exists %}
+          <img src="{{ url_for('static', filename='img/controltech_logo.png') }}" alt="ControlTech" class="sidebar-footer-logo">
+        {% endif %}
+        <span class="sidebar-footer-text">Powered by <strong>ControlTech</strong></span>
+      </a>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div id="tab-optimized" class="tab-panel{% if active_tab == 'optimized' %} active{% endif %}">
+      <div class="page-header">
+        <div class="page-title">Logistics Optimized Orders Uploader <span>(Nearest-First)</span></div>
+        <div class="page-subtitle">Upload Excel orders, match assets, and dispatch nearest-first optimized routes to Wialon.</div>
+      </div>
+      {% include 'tabs/_optimized.html' %}
+    </div>
+
+    <div id="tab-strict" class="tab-panel{% if active_tab == 'strict' %} active{% endif %}">
+      <div class="page-header">
+        <div class="page-title">Logistics Strict Orders Uploader <span>(Excel Order)</span></div>
+        <div class="page-subtitle">Preserve Excel row order when creating Wialon routes with OSRM polylines.</div>
+      </div>
+      {% include 'tabs/_strict.html' %}
+    </div>
+
+    <div id="tab-dispatch" class="tab-panel{% if active_tab == 'dispatch' %} active{% endif %}">
+      <div class="page-header">
+        <div class="page-title">Scheduled Weekly Dispatch <span>(Template Routes)</span></div>
+        <div class="page-subtitle">Load day-based route templates from local zip files and dispatch to Wialon.</div>
+      </div>
+      {% include 'tabs/_dispatch.html' %}
+    </div>
+  </main>
+</div>
+
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+<script>
+  function pad(n) { return String(n).padStart(2, '0'); }
+  function toDatetimeLocal(d) {
+    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  }
+  function initDatetimeDefaults() {
+    const now = new Date();
+    const from = new Date(now);
+    from.setHours(6, 0, 0, 0);
+    const end = new Date(now);
+    end.setHours(18, 0, 0, 0);
+    document.querySelectorAll('.route-from, .dispatch-from').forEach(function(el) {
+      if (!el.value) el.value = toDatetimeLocal(from);
+    });
+    document.querySelectorAll('.route-end, .dispatch-end').forEach(function(el) {
+      if (!el.value) el.value = toDatetimeLocal(end);
+    });
+  }
+  initDatetimeDefaults();
+</script>
+</body>
+</html>
