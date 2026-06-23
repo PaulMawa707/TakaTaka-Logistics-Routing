@@ -1,11 +1,9 @@
-pyproj
-streamlit
+flask
+python-dotenv
 pandas
 requests
-pdfplumber
 numpy
-scikit-learn
-shapely
-geopandas
 pytz
 openpyxl
+Pillow
+gunicorn

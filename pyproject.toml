@@ -1,0 +1,18 @@
+[project]
+name = "taka-taka-logistics-routing"
+version = "1.0.0"
+requires-python = ">=3.12"
+dependencies = [
+    "flask",
+    "python-dotenv",
+    "pandas",
+    "requests",
+    "numpy",
+    "pytz",
+    "openpyxl",
+    "Pillow",
+    "gunicorn",
+]
+
+[tool.vercel]
+entrypoint = "app:app"
