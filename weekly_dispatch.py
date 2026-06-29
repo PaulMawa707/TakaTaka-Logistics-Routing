@@ -14,6 +14,7 @@ import streamlit as st
 
 WAREHOUSES = {
     "TTS": {"lat": -1.1404981978961632, "lon": 36.733312587683756},
+    "Rubis Banana": {"lat": -1.1747329246654616, "lon": 36.758819701449724},
 }
 
 DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
